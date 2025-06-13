@@ -29,7 +29,7 @@ A modern web interface for monitoring and analyzing Arthur GenAI inference data.
 2. **Install dependencies**
 
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Configure environment variables**
@@ -44,7 +44,7 @@ A modern web interface for monitoring and analyzing Arthur GenAI inference data.
 4. **Start the development server**
 
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 5. **Open the application**
@@ -59,11 +59,11 @@ A modern web interface for monitoring and analyzing Arthur GenAI inference data.
 
 ## Development
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript compiler check
+- `bun run dev` - Start development server
+- `bun run build` - Build for production
+- `bun run start` - Start production server
+- `bun run lint` - Run ESLint
+- `bun run type-check` - Run TypeScript compiler check
 
 ## Security
 

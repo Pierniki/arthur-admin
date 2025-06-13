@@ -37,7 +37,7 @@ export async function testArthurConnection(apiKey: string): Promise<{
     // Try to make a simple request to test the connection
     await client.getInferences({ page_size: 1 });
     return { success: true };
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error occurred",
