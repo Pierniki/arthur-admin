@@ -9,6 +9,7 @@ export default tseslint.config(
   {
     ignores: [".next"],
   },
+  // @ts-expect-error - compat is not typed
   ...compat.extends("next/core-web-vitals"),
   {
     files: ["**/*.ts", "**/*.tsx"],
