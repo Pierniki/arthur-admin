@@ -4,71 +4,7 @@ export interface ArthurClientConfig {
   apiKey: string;
 }
 
-// Types based on OpenAPI specification
-export interface TaskResponse {
-  id: string;
-  name: string;
-  created_at: number;
-  updated_at: number;
-  rules: RuleResponse[];
-}
-
-export interface NewTaskRequest {
-  name: string;
-}
-
-export interface RuleResponse {
-  id: string;
-  name: string;
-  type: RuleType;
-  apply_to_prompt: boolean;
-  apply_to_response: boolean;
-  enabled?: boolean;
-  scope: RuleScope;
-  created_at: number;
-  updated_at: number;
-  config?: RuleConfig;
-}
-
-export interface NewRuleRequest {
-  name: string;
-  type: string;
-  apply_to_prompt: boolean;
-  apply_to_response: boolean;
-  config?: RuleConfig;
-}
-
-export interface UpdateRuleRequest {
-  enabled: boolean;
-}
-
-export interface PromptValidationRequest {
-  prompt: string;
-  conversation_id?: string;
-  user_id?: string;
-}
-
-export interface ResponseValidationRequest {
-  response: string;
-  context?: string;
-}
-
-export interface ValidationResult {
-  inference_id?: string;
-  rule_results?: ExternalRuleResult[];
-  user_id?: string;
-}
-
-export interface ExternalRuleResult {
-  id: string;
-  name: string;
-  rule_type: RuleType;
-  scope: RuleScope;
-  result: RuleResultEnum;
-  latency_ms: number;
-  details?: RuleDetails;
-}
-
+// Types for QueryInferences functionality
 export interface QueryInferencesResponse {
   count: number;
   inferences: ExternalInference[];
@@ -111,6 +47,16 @@ export interface ExternalInferenceResponse {
   tokens?: number;
 }
 
+export interface ExternalRuleResult {
+  id: string;
+  name: string;
+  rule_type: RuleType;
+  scope: RuleScope;
+  result: RuleResultEnum;
+  latency_ms: number;
+  details?: RuleDetails;
+}
+
 export interface InferenceFeedbackResponse {
   id: string;
   inference_id: string;
@@ -149,43 +95,7 @@ export type InferenceFeedbackTarget =
 
 export type PaginationSortMethod = "asc" | "desc";
 
-// Rule Configuration Types
-export type RuleConfig =
-  | KeywordsConfig
-  | RegexConfig
-  | ExamplesConfig
-  | ToxicityConfig
-  | PIIConfig;
-
-export interface KeywordsConfig {
-  keywords: string[];
-}
-
-export interface RegexConfig {
-  regex_patterns: string[];
-}
-
-export interface ExamplesConfig {
-  examples: ExampleConfig[];
-  hint?: string;
-}
-
-export interface ExampleConfig {
-  example: string;
-  result: boolean;
-}
-
-export interface ToxicityConfig {
-  threshold?: number;
-}
-
-export interface PIIConfig {
-  disabled_pii_entities?: string[];
-  confidence_threshold?: number;
-  allow_list?: string[];
-}
-
-// Rule Details Types
+// Rule Details Types (kept for ExternalRuleResult)
 export type RuleDetails =
   | KeywordDetailsResponse
   | RegexDetailsResponse
@@ -324,90 +234,6 @@ export class ArthurClient {
     });
 
     return searchParams.toString();
-  }
-
-  // Task Operations
-  async createTask(request: NewTaskRequest): Promise<TaskResponse> {
-    return this.request<TaskResponse>("/api/v2/tasks", {
-      method: "POST",
-      body: JSON.stringify(request),
-    });
-  }
-
-  async getTask(taskId: string): Promise<TaskResponse> {
-    return this.request<TaskResponse>(`/api/v2/tasks/${taskId}`);
-  }
-
-  async searchTasks(searchTerm?: string): Promise<TaskResponse[]> {
-    const queryString = searchTerm
-      ? `?search=${encodeURIComponent(searchTerm)}`
-      : "";
-    return this.request<TaskResponse[]>(`/api/v2/tasks${queryString}`);
-  }
-
-  async archiveTask(taskId: string): Promise<void> {
-    await this.request(`/api/v2/tasks/${taskId}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Task Rule Operations
-  async createTaskRule(
-    taskId: string,
-    request: NewRuleRequest,
-  ): Promise<RuleResponse> {
-    return this.request<RuleResponse>(`/api/v2/tasks/${taskId}/rules`, {
-      method: "POST",
-      body: JSON.stringify(request),
-    });
-  }
-
-  async updateTaskRule(
-    taskId: string,
-    ruleId: string,
-    request: UpdateRuleRequest,
-  ): Promise<TaskResponse> {
-    return this.request<TaskResponse>(
-      `/api/v2/tasks/${taskId}/rules/${ruleId}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(request),
-      },
-    );
-  }
-
-  async archiveTaskRule(taskId: string, ruleId: string): Promise<void> {
-    await this.request(`/api/v2/tasks/${taskId}/rules/${ruleId}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Task-based Validation
-  async validatePrompt(
-    taskId: string,
-    request: PromptValidationRequest,
-  ): Promise<ValidationResult> {
-    return this.request<ValidationResult>(
-      `/api/v2/tasks/${taskId}/validate_prompt`,
-      {
-        method: "POST",
-        body: JSON.stringify(request),
-      },
-    );
-  }
-
-  async validateResponse(
-    taskId: string,
-    inferenceId: string,
-    request: ResponseValidationRequest,
-  ): Promise<ValidationResult> {
-    return this.request<ValidationResult>(
-      `/api/v2/tasks/${taskId}/validate_response/${inferenceId}`,
-      {
-        method: "POST",
-        body: JSON.stringify(request),
-      },
-    );
   }
 
   // Get Inferences

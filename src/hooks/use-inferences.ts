@@ -17,7 +17,10 @@ export interface InferencesFilters {
   pageSize?: number;
 }
 
-export function useInferences(filters: InferencesFilters = {}) {
+export function useInferences(
+  apiKey: string | null,
+  filters: InferencesFilters = {},
+) {
   const params: QueryInferencesParams = {
     task_name: filters.taskName,
     user_id: filters.userId,
@@ -31,8 +34,14 @@ export function useInferences(filters: InferencesFilters = {}) {
   };
 
   return useQuery({
-    queryKey: ["inferences", params],
-    queryFn: () => getInferencesAction(params),
+    queryKey: ["inferences", apiKey, params],
+    queryFn: () => {
+      if (!apiKey) {
+        throw new Error("API key is required");
+      }
+      return getInferencesAction(apiKey, params);
+    },
+    enabled: !!apiKey, // Only run query when API key is available
     staleTime: 0,
   });
 }

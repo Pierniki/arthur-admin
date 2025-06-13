@@ -33,6 +33,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useInferences, type InferencesFilters } from "@/hooks/use-inferences";
+import { useApiKey } from "@/components/api-key-provider";
 import type {
   ExternalRuleResult,
   RuleResultEnum,
@@ -74,6 +75,7 @@ const RULE_STATUSES: RuleResultEnum[] = [
 const PAGE_SIZES = [10, 25, 50, 100];
 
 export function InferencesTable() {
+  const { apiKey } = useApiKey();
   const [appliedFilters, setAppliedFilters] = useState<InferencesFilters>({
     page: 0,
     pageSize: 10,
@@ -86,7 +88,7 @@ export function InferencesTable() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
-  const { data, isLoading, error } = useInferences(appliedFilters);
+  const { data, isLoading, error } = useInferences(apiKey, appliedFilters);
 
   // Use data from query
   const inferences = data?.inferences ?? [];
