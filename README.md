@@ -1,29 +1,72 @@
-# Create T3 App
+# Arthur GenAI Admin Interface
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern web interface for monitoring and analyzing Arthur GenAI inference data. Built with the [T3 Stack](https://create.t3.gg/) for a robust, type-safe development experience.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- 🔐 **Secure API Key Management** - Enter your Arthur API key securely (stored in memory only)
+- 📊 **Inference Monitoring** - View and analyze your Arthur GenAI inference data
+- 🔍 **Advanced Filtering** - Filter by task name, user ID, date ranges, and rule statuses
+- 📈 **Real-time Data** - Live updates of inference results and rule violations
+- 🎯 **Rule Analysis** - Detailed breakdown of rule results with expandable details
+- 📱 **Responsive Design** - Works on desktop and mobile devices
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Prerequisites
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- Node.js 18+
+- An Arthur GenAI API endpoint
+- A valid Arthur GenAI API key
 
-## Learn More
+## Setup
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+1. **Clone the repository**
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+   ```bash
+   git clone <repository-url>
+   cd engine-admin
+   ```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+2. **Install dependencies**
 
-## How do I deploy this?
+   ```bash
+   npm install
+   ```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+3. **Configure environment variables**
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   ARTHUR_BASE_URL=https://your-arthur-api-endpoint.com
+   ```
+
+   Note: You do NOT need to set `ARTHUR_API_KEY` in environment variables. The app will prompt you to enter it securely when you access the interface.
+
+4. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open the application**
+   Visit [http://localhost:3000](http://localhost:3000) in your browser
+
+## Usage
+
+1. **Navigate to the inferences page** by clicking "View Inferences" from the homepage
+2. **Enter your Arthur API key** when prompted - this will be validated against your Arthur API
+3. **Explore your inference data** using the comprehensive filtering and analysis tools
+4. **Use the disconnect button** to change API keys or secure your session
+
+## Development
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript compiler check
+
+## Security
+
+- API keys are never stored in localStorage or environment variables
+- All API communication is handled server-side through Next.js API routes
+- Connection validation ensures only valid API keys can access data

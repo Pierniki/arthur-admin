@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-// import { Alert, AlertDescription } from "./ui/alert";
 import { Loader2 } from "lucide-react";
 
 export function ApiKeyInput() {
@@ -38,7 +37,7 @@ export function ApiKeyInput() {
       } else {
         setError(result.error ?? "Failed to connect with the provided API key");
       }
-    } catch (err) {
+    } catch {
       setError("Failed to validate API key");
     } finally {
       setIsLoading(false);
